@@ -1,3 +1,8 @@
+//Configuration connect to api server
+const server_ip = "localhost"
+const server_port = "8080"
+
+//App
 let tranz = [[0,1,2],[3,4,5],[6,7,8]]
 
 const set = (id, nr) => {
@@ -11,12 +16,12 @@ const set = (id, nr) => {
             }
         }
     }
-    fetch("http://192.168.100.29:8080/api/ttt/set?gameid="+id+"&x="+fx+"&y="+fy)
+    fetch("http://" + server_ip + ":" + server_port + "/api/ttt/set?gameid="+id+"&x="+fx+"&y="+fy)
 	refresh(id)
 }
 
 const refresh = (id) => {
-    fetch("http://192.168.100.29:8080/api/ttt/getAll?gameid=" + id)
+    fetch("http://" + server_ip + ":" + server_port + "/api/ttt/getAll?gameid=" + id)
         .then(resp => resp.json())
         .then(resp => {
             console.log("Game table:")
@@ -68,7 +73,7 @@ const joinGame2 = () => {
 }
 
 const createGame = () => {
-    fetch("http://192.168.100.29:8080/api/ttt/createGame")
+    fetch("http://" + server_ip + ":" + server_port + "/api/ttt/createGame")
         .then(resp => resp.json())
         .then(resp => {
             console.log("Game id:");
