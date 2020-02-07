@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 @Service
-public class Manager {
+public class  Manager {
     private List<Game> gameList;
 
     public Manager() {
@@ -22,24 +22,24 @@ public class Manager {
         return id;
     }
 
-    public State[][] getAll(int gameid) {
+    public State[][] getAll(int gameid, String code) {
         try {
-            return gameList.get(gameid).getAll();
+            return gameList.get(gameid).getAll(code);
         } catch (Exception err){}
-        return null;
+        return new State[0][];
     }
 
-    public State get(int gameid, int x, int y) {
+    public State get(int gameid, int x, int y, String code) {
         State st = State.NON;
         try {
-            st = gameList.get(gameid).get(x, y);
+            st = gameList.get(gameid).get(x, y, code);
         } catch (Exception err){}
         return st;
     }
 
-    public void set(int gameid, int x, int y) {
+    public void set(int gameid, int x, int y, String code) {
         try {
-            gameList.get(gameid).set(x, y);
+            gameList.get(gameid).set(x, y, code);
         } catch (Exception err){}
     }
 
@@ -61,5 +61,9 @@ public class Manager {
         try {
             gameList.get(gameid).setGameState(gameState);
         } catch (Exception err){}
+    }
+
+    public String getAuthCode(int gameid){
+        return gameList.get(gameid).generateAuthCode();
     }
 }
