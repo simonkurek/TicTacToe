@@ -9,20 +9,19 @@ public class Game {
     private GameState gameState;
     private int id;
     private State lastState = State.NON;
-    private HashMap<String, State> authKeys = new HashMap(); /*cookie auth code*/
     private int players = 0;
+    private HashMap<String, State> authKeys; /*cookie auth code*/
 
     public Game(int id){
         this.id = id;
         table = new Table();
         table.clear();
         gameState = GameState.BEFORE;
+        authKeys = new HashMap();
     }
 
     public State[][] getAll(String code){
-        System.out.println("dupa321");
         if (accessBoth(code)){
-            System.out.println("dupa123");
             return table.getAll();
         }
         return new State[0][];
@@ -92,13 +91,14 @@ public class Game {
     }
 
     public boolean accessBoth(String authCode){
-        if (authKeys.containsKey(authCode)){
-            return true;
-        }
-        return false;
+        return authKeys.containsKey(authCode);
     }
 
     public State getStateFromCode(String authCode){
+        /*tu coś nie działa + put*/
+        System.out.println(authKeys.containsKey(authCode));
         return authKeys.get(authCode);
     }
 }
+
+/*podmienic hashmape na tablice 2 mianowa*/

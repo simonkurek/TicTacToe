@@ -3,7 +3,7 @@ package com.suhatig.tictactoe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/ttt")
 public class Api {
@@ -38,6 +38,6 @@ public class Api {
 
     @GetMapping("/getAuthCode")
     public String getAuthCode(@RequestParam int gameid){
-        return manager.getAuthCode(gameid);
+        return '"' + manager.getAuthCode(gameid) + '"';
     }
 }

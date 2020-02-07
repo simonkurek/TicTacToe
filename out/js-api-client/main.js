@@ -1,12 +1,14 @@
 const SRV_IP = "localhost"
 
 let tranz = [[0,1,2],[3,4,5],[6,7,8]]
-let authCode;
+let authCode
 
-const getCode = (id) => {
+const connect = (id) => {
     fetch("http://" + SRV_IP + ":8080/api/ttt/getAuthCode?gameid=" + id)
+        .then(resp => resp.json())
         .then(resp => {
-            console.log(resp.body)
+            authCode = resp
+            refresh(id)
         })
 }
 
@@ -32,7 +34,8 @@ const refresh = (id) => {
             console.log("Game table:")
             let array  = resp
             console.log(array)
-            document.getElementById("main").innerHTML = "<div id='table'></div>"
+            document.getElementById("main").innerHTML = "<h2>Game id: " + id + "</h2>"
+            document.getElementById("main").innerHTML += "<div id='table'></div>"
             let cells = ["tl", "t", "tr", "ml", "m", "mr", "dl", "d", "dr"]
             for(n=0; n<9; n++){
                 document.getElementById("table").innerHTML +=
@@ -74,7 +77,7 @@ const refresh = (id) => {
 
 const joinGame2 = () => {
     const id = document.getElementById("numberGameInput").value
-    refresh(id);
+    connect(id)
 }
 
 const createGame = () => {
@@ -83,8 +86,7 @@ const createGame = () => {
         .then(resp => {
             console.log("Game id:");
             console.log(resp);
-            getCode(resp)
-            /*refresh(resp)*/
+           connect(resp)
         })
 }
 
