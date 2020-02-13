@@ -1,3 +1,4 @@
+//if player is not on localhost, this must be real ip
 const SRV_IP = "localhost"
 
 let tranz = [[0,1,2],[3,4,5],[6,7,8]]
@@ -23,7 +24,7 @@ const set = (id, nr) => {
             }
         }
     }
-    fetch("http://" + SRV_IP + ":8080/api/ttt/set?gameid="+id+"&x="+fx+"&y="+fy)
+    fetch("http://" + SRV_IP + ":8080/api/ttt/set?gameid="+id+"&x="+fx+"&y="+fy+"&code="+authCode)
 	refresh(id)
 }
 

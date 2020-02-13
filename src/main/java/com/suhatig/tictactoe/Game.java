@@ -9,7 +9,7 @@ public class Game {
     private int id;
     private State lastState = State.NON;
     private int players = 0;
-    private String[] codes; //authcodes
+    private String[] codes;
 
     public Game(int id){
         this.id = id;
@@ -34,20 +34,17 @@ public class Game {
     }
 
     public void set(int x, int y, String code){
-        System.out.println(getStateFromCode("getStateFromCode: " + code));
-        if (getStateFromCode(code) != lastState && getStateFromCode(code) != State.NON){
-            if (table.get(x, y) == State.NON){
-                State state = State.NON;
-                if (lastState==State.O){
-                    state = State.X;
-                } else if (lastState==State.X){
-                    state = State.O;
-                } else if (lastState==State.NON){
-                    state = State.X;
-                } else {
-                    System.err.println("Error: game.setting func() error");
-                }
-                if (state!=State.NON){
+        if (getStateFromCode(code) != State.NON){
+            if (getStateFromCode(code) != lastState){
+                if (table.get(x, y) == State.NON){
+                    State state = State.NON;
+                    if (lastState == State.X){
+                        state = State.O;
+                    } else if (lastState == State.O){
+                        state = State.X;
+                    } else if (lastState == State.NON){
+                        state = State.X;
+                    }
                     table.set(x, y, state);
                     lastState = state;
                 }
@@ -79,7 +76,6 @@ public class Game {
         if (players<2){
             Random r = new Random();
             String code = Integer.toHexString(r.nextInt(1000000000));
-            System.out.println("inGame(id: " + id + ") codes[" + players + "] = " + code);
             codes[players] = code;
             players++;
             return code;
