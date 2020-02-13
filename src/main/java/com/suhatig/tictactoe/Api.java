@@ -3,7 +3,7 @@ package com.suhatig.tictactoe;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/ttt")
 public class Api {
@@ -17,22 +17,27 @@ public class Api {
     }
 
     @GetMapping("/getAll")
-    public State[][] getAll(@RequestParam int gameid){
-        return manager.getAll(gameid);
+    public State[][] getAll(@RequestParam int gameid, String code){
+        return manager.getAll(gameid, code);
     }
 
     @GetMapping("/get")
-    public State get(@RequestParam int gameid, int x, int y){
-        return manager.get(gameid, x, y);
+    public State get(@RequestParam int gameid, int x, int y, String code){
+        return manager.get(gameid, x, y, code);
     }
 
     @GetMapping("/set")
-    public void set(@RequestParam int gameid, int x, int y){
-        manager.set(gameid, x, y);
+    public void set(@RequestParam int gameid, int x, int y, String code){
+        manager.set(gameid, x, y, code);
     }
 
     @GetMapping("/clear")
     public void clear(@RequestParam int gameid){
         manager.clear(gameid);
+    }
+
+    @GetMapping("/getAuthCode")
+    public String getAuthCode(@RequestParam int gameid){
+        return '"' + manager.getAuthCode(gameid) + '"';
     }
 }
