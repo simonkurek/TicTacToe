@@ -1,6 +1,5 @@
 package com.suhatig.tictactoe;
 
-import java.util.HashMap;
 import java.util.Random;
 
 public class Game {
@@ -10,16 +9,14 @@ public class Game {
     private int id;
     private State lastState = State.NON;
     private int players = 0;
-    /*private String[][] authKeys;*/
-    private HashMap<String, State> authKeys; /*cookie auth code*/
+    private String[] codes; //authcodes
 
     public Game(int id){
         this.id = id;
         table = new Table();
         table.clear();
         gameState = GameState.BEFORE;
-        authKeys = new HashMap<>();
-        /*authKeys = new String[2][2];*/
+        codes = new String[2];
     }
 
     public State[][] getAll(String code){
@@ -37,7 +34,8 @@ public class Game {
     }
 
     public void set(int x, int y, String code){
-        if (getStateFromCode(code) != lastState){
+        System.out.println(getStateFromCode("getStateFromCode: " + code));
+        if (getStateFromCode(code) != lastState && getStateFromCode(code) != State.NON){
             if (table.get(x, y) == State.NON){
                 State state = State.NON;
                 if (lastState==State.O){
@@ -80,39 +78,29 @@ public class Game {
     public String generateAuthCode(){
         if (players<2){
             Random r = new Random();
-            players++;
             String code = Integer.toHexString(r.nextInt(1000000000));
-            if (players==0){
-                authKeys.put(code, State.X);
-                /*authKeys[0][0] = code;
-                authKeys[0][1] = String.valueOf(State.X);*/
-            } else {
-                authKeys.put(code, State.O);
-                /*authKeys[1][0] = code;
-                authKeys[1][1] = String.valueOf(State.O);*/
-            }
+            System.out.println("inGame(id: " + id + ") codes[" + players + "] = " + code);
+            codes[players] = code;
+            players++;
             return code;
         }
+        players++;
         return "err.tmp";
     }
 
-    public boolean accessBoth(String authCode){
-        return authKeys.containsKey(authCode);
-        /*if (authKeys[0][0] == authCode || authKeys[1][0] == authCode){
+    private boolean accessBoth(String authCode){
+        if (authCode.equals(codes[0]) || authCode.equals(codes[1])){
             return true;
         }
-        return false;*/
+        return false;
     }
 
-    public State getStateFromCode(String authCode){
-        System.out.println(authKeys.containsKey(authCode));
-        System.out.println(authKeys.containsValue(authCode));
-        System.out.println(authKeys.get(authCode));
-        return authKeys.get(authCode);
-        /*if (authKeys[0][0] == authCode){
-            return (State)authKeys[0][1];
-        }*/
+    private State getStateFromCode(String authCode){
+        if (authCode.equals(codes[0])){
+            return State.X;
+        } else if (authCode.equals(codes[1])){
+            return State.O;
+        }
+        return State.NON;
     }
 }
-
-/*podmienic hashmape na tablice 2 mianowa*/

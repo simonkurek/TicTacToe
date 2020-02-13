@@ -31,47 +31,51 @@ const refresh = (id) => {
     fetch("http://" + SRV_IP + ":8080/api/ttt/getAll?gameid=" + id + "&code=" + authCode)
         .then(resp => resp.json())
         .then(resp => {
-            console.log("Game table:")
-            let array  = resp
-            console.log(array)
-            document.getElementById("main").innerHTML = "<h2>Game id: " + id + "</h2>"
-            document.getElementById("main").innerHTML += "<div id='table'></div>"
-            let cells = ["tl", "t", "tr", "ml", "m", "mr", "dl", "d", "dr"]
-            for(n=0; n<9; n++){
-                document.getElementById("table").innerHTML +=
-                    "<div class='cell " + cells[n] + "' id='cell"+n+"'></div>"
-            }
-            for (j=0; j<3; j++){
-                for (i=0; i<3; i++) {
-                    if (array[j][i] != "NON") {
-                        document.getElementById("cell"+tranz[j][i]).innerHTML = array[j][i]
-                    } else {
-                        document.getElementById("cell"+tranz[j][i]).innerHTML = " "
+            if (resp != "") {
+                console.log("Game table:")
+                let array = resp
+                console.log(array)
+                document.getElementById("main").innerHTML = "<h2>Game id: " + id + "</h2>"
+                document.getElementById("main").innerHTML += "<div id='table'></div>"
+                let cells = ["tl", "t", "tr", "ml", "m", "mr", "dl", "d", "dr"]
+                for (n = 0; n < 9; n++) {
+                    document.getElementById("table").innerHTML +=
+                        "<div class='cell " + cells[n] + "' id='cell" + n + "'></div>"
+                }
+                for (j = 0; j < 3; j++) {
+                    for (i = 0; i < 3; i++) {
+                        if (array[j][i] != "NON") {
+                            document.getElementById("cell" + tranz[j][i]).innerHTML = array[j][i]
+                        } else {
+                            document.getElementById("cell" + tranz[j][i]).innerHTML = " "
+                        }
                     }
                 }
+                document.getElementById("main").innerHTML +=
+                    "<a class='but' id='refresh'>Refresh</a>"
+                const refreshBut = document.getElementById("refresh")
+                    .addEventListener("click", _ => refresh(id))
+                const cel0 = document.getElementById("cell0")
+                    .addEventListener("click", _ => set(id, 0))
+                const cel1 = document.getElementById("cell1")
+                    .addEventListener("click", _ => set(id, 1))
+                const cel2 = document.getElementById("cell2")
+                    .addEventListener("click", _ => set(id, 2))
+                const cel3 = document.getElementById("cell3")
+                    .addEventListener("click", _ => set(id, 3))
+                const cel4 = document.getElementById("cell4")
+                    .addEventListener("click", _ => set(id, 4))
+                const cel5 = document.getElementById("cell5")
+                    .addEventListener("click", _ => set(id, 5))
+                const cel6 = document.getElementById("cell6")
+                    .addEventListener("click", _ => set(id, 6))
+                const cel7 = document.getElementById("cell7")
+                    .addEventListener("click", _ => set(id, 7))
+                const cel8 = document.getElementById("cell8")
+                    .addEventListener("click", _ => set(id, 8))
+            } else {
+                alert("Error: Game Server or Client Error!")
             }
-            document.getElementById("main").innerHTML +=
-                "<a class='but' id='refresh'>Refresh</a>"
-            const refreshBut = document.getElementById("refresh")
-                .addEventListener("click", _ => refresh(id))
-            const cel0 = document.getElementById("cell0")
-                .addEventListener("click", _ => set(id, 0))
-            const cel1 = document.getElementById("cell1")
-                .addEventListener("click", _ => set(id, 1))
-            const cel2 = document.getElementById("cell2")
-                .addEventListener("click", _ => set(id, 2))
-            const cel3 = document.getElementById("cell3")
-                .addEventListener("click", _ => set(id, 3))
-            const cel4 = document.getElementById("cell4")
-                .addEventListener("click", _ => set(id, 4))
-            const cel5 = document.getElementById("cell5")
-                .addEventListener("click", _ => set(id, 5))
-            const cel6 = document.getElementById("cell6")
-                .addEventListener("click", _ => set(id, 6))
-            const cel7 = document.getElementById("cell7")
-                .addEventListener("click", _ => set(id, 7))
-            const cel8 = document.getElementById("cell8")
-                .addEventListener("click", _ => set(id, 8))
         })
 }
 
