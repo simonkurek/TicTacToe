@@ -66,4 +66,8 @@ public class  Manager {
     public String getAuthCode(int gameid){
         return gameList.get(gameid).generateAuthCode();
     }
+
+    public State getWinner(int gameid, String code){
+        return gameList.get(gameid).winnerChecker(code);
+    }
 }

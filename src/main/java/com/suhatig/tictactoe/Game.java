@@ -7,16 +7,18 @@ public class Game {
     private Table table;
     private GameState gameState;
     private int id;
-    private State lastState = State.NON;
-    private int players = 0;
+    private State lastState;
+    private int players;
     private String[] codes;
 
     public Game(int id){
         this.id = id;
         table = new Table();
         table.clear();
-        gameState = GameState.BEFORE;
+        players = 0;
+        lastState = State.NON;
         codes = new String[2];
+        gameState = GameState.BEFORE;
     }
 
     public State[][] getAll(String code){
@@ -82,6 +84,36 @@ public class Game {
         }
         players++;
         return "err.tmp";
+    }
+
+    public State winnerChecker(String code){
+        if (accessBoth(code)){
+            State st = State.X;
+            for (int n=0; n<2; n++){
+                if (n==1){
+                    st = State.O;
+                }
+                for (int i=0; i<3; i++){
+                    if (table.get(i,0).equals(st) && table.get(i,1).equals(st) && table.get(i, 2).equals(st)){
+                        return st;
+                    }
+                }
+                //horizontally
+                for (int i=0; i<3; i++){
+                    if (table.get(0,i).equals(st) && table.get(1,i).equals(st) && table.get(2, i).equals(st)){
+                        return st;
+                    }
+                }
+                //X-cross
+                if (table.get(0,0).equals(st) && table.get(1,1).equals(st) && table.get(2,2).equals(st)){
+                    return st;
+                }
+                if (table.get(0,2).equals(st) && table.get(1,1).equals(st) && table.get(2,0).equals(st)){
+                    return st;
+                }
+            }
+        }
+        return State.NON;
     }
 
     private boolean accessBoth(String authCode){
