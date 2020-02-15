@@ -1,4 +1,4 @@
-//if player is not on localhost, this must be real ip
+//ip java server
 const SRV_IP = "localhost"
 
 let tranz = [[0,1,2],[3,4,5],[6,7,8]]
@@ -74,8 +74,19 @@ const refresh = (id) => {
                     .addEventListener("click", _ => set(id, 7))
                 const cel8 = document.getElementById("cell8")
                     .addEventListener("click", _ => set(id, 8))
+                checkWinner(id)
             } else {
                 alert("Error: Game Server or Client Error!")
+            }
+        })
+}
+
+const checkWinner = (id) => {
+    fetch("http://" + SRV_IP + ":8080/api/ttt/checkWinner?gameid="+id+"&code="+authCode)
+        .then(resp => resp.json())
+        .then(resp => {
+            if (resp != "NON"){
+                alert("Winner is " + resp)
             }
         })
 }

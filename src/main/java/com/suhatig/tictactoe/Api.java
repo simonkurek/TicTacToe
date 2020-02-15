@@ -40,4 +40,9 @@ public class Api {
     public String getAuthCode(@RequestParam int gameid){
         return '"' + manager.getAuthCode(gameid) + '"';
     }
+
+    @GetMapping("/checkWinner")
+    public State checkWinner(@RequestParam int gameid, String code){
+        return manager.getWinner(gameid, code);
+    }
 }
