@@ -89,6 +89,14 @@ const checkWinner = (id) => {
                 alert("Winner is " + resp)
             }
         })
+    //remis check
+    fetch("http://" + SRV_IP + ":8080/api/ttt/isRemis?gameid="+id+"&code="+authCode)
+        .then(resp => resp.json())
+        .then(resp => {
+            if (resp){
+                alert("Remis!")
+            }
+        })
 }
 
 const joinGame2 = () => {

@@ -45,4 +45,9 @@ public class Api {
     public State checkWinner(@RequestParam int gameid, String code){
         return manager.getWinner(gameid, code);
     }
+
+    @GetMapping("/isRemis")
+    public boolean isRemis(@RequestParam int gameid, String code){
+        return manager.isEndGame(gameid, code);
+    }
 }

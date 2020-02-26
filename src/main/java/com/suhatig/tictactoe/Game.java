@@ -1,6 +1,7 @@
 package com.suhatig.tictactoe;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class Game {
 
@@ -10,15 +11,17 @@ public class Game {
     private State lastState;
     private int players;
     private String[] codes;
+    private boolean endGame;
 
     public Game(int id){
         this.id = id;
         table = new Table();
         table.clear();
         players = 0;
+        endGame = false;
         lastState = State.NON;
         codes = new String[2];
-        gameState = GameState.BEFORE;
+        gameState = GameState.READY;
     }
 
     public State[][] getAll(String code){
@@ -76,6 +79,7 @@ public class Game {
 
     public String generateAuthCode(){
         if (players<2){
+            gameState = GameState.ACTIVE;
             Random r = new Random();
             String code = Integer.toHexString(r.nextInt(1000000000));
             codes[players] = code;
@@ -88,6 +92,8 @@ public class Game {
 
     public State winnerChecker(String code){
         if (accessBoth(code)){
+            checkRemis();
+            //winner check
             State st = State.X;
             for (int n=0; n<2; n++){
                 if (n==1){
@@ -98,7 +104,6 @@ public class Game {
                         return st;
                     }
                 }
-                //horizontally
                 for (int i=0; i<3; i++){
                     if (table.get(0,i).equals(st) && table.get(1,i).equals(st) && table.get(2, i).equals(st)){
                         return st;
@@ -116,6 +121,20 @@ public class Game {
         return State.NON;
     }
 
+    private void checkRemis(){
+        boolean non = false;
+        for (int x=0; x<3; x++){
+            for (int y=0; y<3; y++){
+                if (table.get(x, y) == State.NON){
+                    non = true;
+                }
+            }
+        }
+        if (!(non)){
+            endGame = true;
+        }
+    }
+
     private boolean accessBoth(String authCode){
         if (authCode.equals(codes[0]) || authCode.equals(codes[1])){
             return true;
@@ -130,5 +149,29 @@ public class Game {
             return State.O;
         }
         return State.NON;
+    }
+
+    public boolean isEndGame(String authCode){
+        if (accessBoth(authCode)){
+            return endGame;
+        }
+        return false;
+    }
+
+    private void resetGame(){
+        gameState = GameState.AFTER;
+        /*end game time out*/
+        try {
+            TimeUnit.SECONDS.sleep(30);
+        } catch (Exception e){
+            System.out.println("Error: timeout resetGame() error!");
+        }
+        table.clear();
+        players = 0;
+        endGame = false;
+        lastState = State.NON;
+        codes[0] = null;
+        codes[1] = null;
+        gameState = GameState.READY;
     }
 }

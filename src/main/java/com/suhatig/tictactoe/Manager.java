@@ -3,12 +3,10 @@ package com.suhatig.tictactoe;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 @Service
-public class  Manager {
+public class  Manager{
     private List<Game> gameList;
 
     public Manager() {
@@ -49,25 +47,15 @@ public class  Manager {
         } catch (Exception err){}
     }
 
-    public GameState getGameState(int gameid) {
-        GameState gs = GameState.NON;
-        try {
-            gs = gameList.get(gameid).getGameState();
-        } catch (Exception err){}
-        return  gs;
-    }
-
-    public void setGameState(int gameid, GameState gameState) {
-        try {
-            gameList.get(gameid).setGameState(gameState);
-        } catch (Exception err){}
-    }
-
     public String getAuthCode(int gameid){
         return gameList.get(gameid).generateAuthCode();
     }
 
     public State getWinner(int gameid, String code){
         return gameList.get(gameid).winnerChecker(code);
+    }
+
+    public boolean isEndGame(int gameid, String code){
+        return gameList.get(gameid).isEndGame(code);
     }
 }
